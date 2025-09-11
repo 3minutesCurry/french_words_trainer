@@ -41,11 +41,46 @@ def import_modules_from_folder(folder_name):
 words_category = get_subfolders()
 
 if "step" not in st.session_state:
-    st.session_state["step"] = 1
+    st.session_state["step"] = 0
 
 
 
 # 값이 설정되었는지 확인
+if st.session_state['step'] == 0:
+    st.markdown(
+    """
+    <style>
+    button {
+        animation: fadeIn 0.5s ease-in-out forwards;
+        opacity: 0;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+    )
+        
+    words_category_dived_by4 = len(words_category) // 4
+    
+    col1, col2, col3, col4 = st.columns(4) 
+    col_list = [col1, col2, col3, col4]
+    k = 0
+    
+    for i in words_category:
+        with col_list[k]:
+            if st.button(f"{i}", key=f"button_{i}", use_container_width=True):
+                    st.session_state["word_category_name"] = i
+                    st.session_state["step"] = 1
+                    st.rerun()
+            if k != 3:
+                k = k+1
+            else:
+                k = 0
+
 if st.session_state["step"] == 1:
 
     st.markdown(
@@ -65,24 +100,24 @@ if st.session_state["step"] == 1:
     unsafe_allow_html=True
     )
 
+    word_category_name = st.session_state["word_category_name"]
+
     
+    files = import_modules_from_folder(word_category_name)
+    st.write(f"* {word_category_name}")
+    files_names = list(files.keys())
+    file_order = 1
 
-    for i in words_category:
-        files = import_modules_from_folder(i)
-        st.write(f"* {i}")
-        files_names = list(files.keys())
-        file_order = 1
-
-        for k in files_names:
-            time.sleep(0.05)
-            if files[k].order != file_order:
-                st.markdown("")
-                file_order = files[k].order
-            if st.button(f"{files[k].name}", key=f"button_{k}"):
-                st.session_state["file_name"] = files[k].name
-                st.session_state["step"] = 2
-                st.session_state["the_file"] = files[k]
-                st.rerun()
+    for k in files_names:
+        time.sleep(0.05)
+        if files[k].order != file_order:
+            st.markdown("")
+            file_order = files[k].order
+        if st.button(f"{files[k].name}", key=f"button_{k}"):
+            st.session_state["file_name"] = files[k].name
+            st.session_state["step"] = 2
+            st.session_state["the_file"] = files[k]
+            st.rerun()
 
     
 
