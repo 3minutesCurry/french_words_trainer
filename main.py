@@ -143,7 +143,7 @@ elif st.session_state["step"] == 2:
     the_file = st.session_state["the_file"]
     file_name = st.session_state["file_name"]
 
-    st.success(f"[{file_name}]를 선택하셨습니다!")
+    st.success(f"{file_name}")
     
     dict_count = sum(
         1 for k, v in vars(the_file).items()
@@ -246,7 +246,7 @@ elif st.session_state["step"] == 3:
 
     if the_file.type == "word":
         # 3등분된 열 생성
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3 = st.columns(3)
 
         # 각 열에 버튼 배치
         with col1:
@@ -260,40 +260,12 @@ elif st.session_state["step"] == 3:
                 st.session_state["word_type"] = 1
                 st.rerun()
         with col3:
-            if st.button("히라가나만", use_container_width=True):
-                st.session_state["step"] = 4
-                st.session_state["word_type"] = 2
-                st.rerun()
-        with col4:
             if st.button("랜덤", use_container_width=True):
                 st.session_state["step"] = 4
                 st.session_state["word_type"] = 3
                 st.rerun()
 
 
-        col1, col2, col3, col4 = st.columns(4)
-
-        # 각 열에 버튼 배치
-        with col1:
-            if st.button("기본 (괄호제거)", use_container_width=True):
-                st.session_state["step"] = 4
-                st.session_state["word_type"] = 4
-                st.rerun()
-        with col2:
-            if st.button("단어만 (괄호제거)", use_container_width=True):
-                st.session_state["step"] = 4
-                st.session_state["word_type"] = 5
-                st.rerun()
-        with col3:
-            if st.button("히라가나만 (괄호제거)", use_container_width=True):
-                st.session_state["step"] = 4
-                st.session_state["word_type"] = 6
-                st.rerun()
-        with col4:
-            if st.button("랜덤 (괄호제거)", use_container_width=True):
-                st.session_state["step"] = 4
-                st.session_state["word_type"] = 7
-                st.rerun()
 
        
     else:
